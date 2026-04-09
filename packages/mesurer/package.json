@@ -1,8 +1,9 @@
 {
   "name": "mesurer",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Measure and align everything on localhost.",
   "license": "MIT",
+  "author": "Julien Thibeaut",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -25,6 +26,14 @@
   "sideEffects": ["*.css"],
   "publishConfig": {
     "access": "public"
+  },
+  "homepage": "https://mesurer.ibelick.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ibelick/mesurer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ibelick/mesurer/issues"
   },
   "scripts": {
     "build": "tsup && pnpm exec tailwindcss -i styles.css -o dist/styles.css",
