@@ -1,6 +1,6 @@
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./logo.svg">
-  <img src="./logo.svg" alt="Mesurer" width="200">
+  <source media="(prefers-color-scheme: dark)" srcset="https://mesurer.ibelick.com/logo-dark.svg">
+  <img src="https://mesurer.ibelick.com/logo.svg" alt="Mesurer" width="200">
 </picture>
 
 <br>
@@ -8,9 +8,9 @@
 [![npm version](https://img.shields.io/npm/v/mesurer)](https://www.npmjs.com/package/mesurer)
 [![downloads](https://img.shields.io/npm/dm/mesurer)](https://www.npmjs.com/package/mesurer)
 
-**[Mesurer](https://github.com/ibelick/mesurer)** is a lightweight measurement and alignment overlay for React apps. Toggle it on, select elements, and measure distances directly in the browser.
+**[Mesurer](https://mesurer.ibelick.com)** is a lightweight measurement and alignment overlay for React apps. Toggle it on, select elements, and measure distances directly in the browser.
 
-[Documentation and demo](https://mesurer.ibelick.com/)
+[Full documentation](https://mesurer.ibelick.com/)
 
 ## Install
 

@@ -10,7 +10,7 @@ export const useMeasureToggles = (options: MeasureToggleOptions = {}) => {
   const [enabled, setEnabled] = useState(options.initialEnabled ?? true)
   const [altPressed, setAltPressed] = useState(false)
   const [toolMode, setToolMode] = useState<ToolMode>(
-    options.initialToolMode ?? "select"
+    options.initialToolMode ?? "none"
   )
   const holdEnabled = false
   const multiMeasureEnabled = false

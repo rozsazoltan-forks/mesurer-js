@@ -33,7 +33,7 @@ export function App() {
             </a>
           </div>
           <p className="max-w-xl leading-relaxed text-muted">
-            Measure and align anything in your UI directly in the browser.
+            Measure and align everything on localhost.
           </p>
         </div>
 
@@ -116,7 +116,7 @@ export default function RootLayout({ children }) {
                 <code className="code">S</code>
               </div>
               <div className="max-w-[60%] text-right text-balance text-muted">
-                Toggle Select mode
+                Select mode (default)
               </div>
             </div>
             <div className="flex items-start justify-between gap-8 border-b border-border px-2 py-2">
