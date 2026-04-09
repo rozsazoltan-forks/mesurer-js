@@ -1,9 +1,11 @@
+import { Measurer } from "mesurer";
 import InstallCommand from "./components/install-command";
 import CodeBlock from "./components/code-block";
 
 export function App() {
   return (
     <main className="min-h-screen px-5 py-20">
+      <Measurer />
       <div className="mx-auto flex max-w-2xl flex-col gap-14">
         <div className="flex flex-col gap-4">
           <div className="flex items-end gap-2">
@@ -37,7 +39,7 @@ export function App() {
           <p>
             Then add the component preference at the root of your application:
           </p>
-          <CodeBlock as="pre">{`import Mesurer from "mesurer";
+          <CodeBlock as="pre">{`import { Measurer } from "mesurer";
 
 export default function RootLayout({ children }) {
   return (
