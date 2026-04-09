@@ -10,6 +10,7 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import { createPortal } from "react-dom";
+import { MEASURE_TRANSITION_MS } from "./constants";
 import { Toolbar } from "./components/toolbar";
 import { useDragState } from "./hooks/use-drag-state";
 import { useGuideDragHold } from "./hooks/use-guide-drag-hold";
@@ -67,6 +68,7 @@ function MeasurerClient({
 }: Required<MeasurerProps>) {
   const selectionRectRef = useRef<Rect | null>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);
+  const selectionAnimationCleanupTimeoutRef = useRef<number | null>(null);
 
   const persistedState = useMemo(() => {
     if (!persistOnReload) return null;
@@ -361,6 +363,61 @@ function MeasurerClient({
     setHoverRect(null);
   }, [hoverHighlightEnabled, setHoverRect]);
 
+  useEffect(() => {
+    const hasSelectionAnimationState =
+      !!selectionOriginRect ||
+      !!selectedMeasurement?.originRect ||
+      selectedMeasurements.some((measurement) => !!measurement.originRect);
+
+    if (!hasSelectionAnimationState) {
+      if (selectionAnimationCleanupTimeoutRef.current !== null) {
+        window.clearTimeout(selectionAnimationCleanupTimeoutRef.current);
+        selectionAnimationCleanupTimeoutRef.current = null;
+      }
+      return;
+    }
+
+    if (selectionAnimationCleanupTimeoutRef.current !== null) return;
+
+    selectionAnimationCleanupTimeoutRef.current = window.setTimeout(() => {
+      selectionAnimationCleanupTimeoutRef.current = null;
+
+      setSelectionOriginRect((prev) => (prev ? null : prev));
+
+      setSelectedMeasurement((prev) => {
+        if (!prev?.originRect) return prev;
+        const { originRect: _originRect, ...next } = prev;
+        return next;
+      });
+
+      setSelectedMeasurements((prev) => {
+        let changed = false;
+        const next = prev.map((measurement) => {
+          if (!measurement.originRect) return measurement;
+          changed = true;
+          const { originRect: _originRect, ...rest } = measurement;
+          return rest;
+        });
+        return changed ? next : prev;
+      });
+    }, MEASURE_TRANSITION_MS);
+  }, [
+    selectionOriginRect,
+    selectedMeasurement,
+    selectedMeasurements,
+    setSelectedMeasurement,
+    setSelectedMeasurements,
+    setSelectionOriginRect,
+  ]);
+
+  useEffect(() => {
+    return () => {
+      if (selectionAnimationCleanupTimeoutRef.current !== null) {
+        window.clearTimeout(selectionAnimationCleanupTimeoutRef.current);
+      }
+    };
+  }, []);
+
   const displayedMeasurements = holdEnabled
     ? measurements
     : multiMeasureEnabled && measurements.length > 0
@@ -535,6 +592,7 @@ function MeasurerClient({
         optionContainerLines={optionContainerLines}
         guides={guides}
         hoverGuide={hoverGuide}
+        draggingGuideId={draggingGuideId}
         selectedGuideIds={selectedGuideIds}
         guideColorActive={guideColorActive}
         guideColorHover={guideColorHover}

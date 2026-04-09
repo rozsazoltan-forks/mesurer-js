@@ -60,6 +60,7 @@ type MeasurerOverlayProps = {
   optionContainerLines: OptionContainerLines | null;
   guides: Guide[];
   hoverGuide: Guide | null;
+  draggingGuideId: string | null;
   selectedGuideIds: string[];
   guideColorActive: string;
   guideColorHover: string;
@@ -108,6 +109,7 @@ export const MeasurerOverlay = memo(function MeasurerOverlay({
   optionContainerLines,
   guides,
   hoverGuide,
+  draggingGuideId,
   selectedGuideIds,
   guideColorActive,
   guideColorHover,
@@ -125,7 +127,13 @@ export const MeasurerOverlay = memo(function MeasurerOverlay({
     <div
       className={`absolute inset-0 ${
         enabled && toolMode !== "none"
-          ? `pointer-events-auto ${guidesEnabled ? "cursor-crosshair" : "cursor-default"} opacity-100`
+          ? `pointer-events-auto ${
+              guidesEnabled
+                ? hoverGuide || draggingGuideId
+                  ? "cursor-default"
+                  : "cursor-crosshair"
+                : "cursor-default"
+            } opacity-100`
           : "pointer-events-none opacity-0"
       }`}
       onPointerDown={onPointerDown}

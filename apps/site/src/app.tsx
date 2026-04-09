@@ -11,9 +11,24 @@ export function App() {
       <Measurer />
       <div className="mx-auto flex max-w-2xl flex-col gap-14">
         <div className="flex flex-col gap-4">
+          <img
+            src="/logo.webp"
+            alt="Mesurer"
+            className="h-9 w-9"
+            width={36}
+            height={36}
+            loading="eager"
+          />
           <div className="flex items-end gap-2">
             <h1 className="font-medium leading-tight text-strong">Mesurer</h1>
-            <span className="text-sm text-muted">v{version}</span>
+            <a
+              href="https://www.npmjs.com/package/mesurer"
+              target="_blank"
+              rel="noreferrer"
+              className="text-sm text-muted transition-colors hover:text-strong"
+            >
+              v{version}
+            </a>
             <a
               href="https://www.npmjs.com/package/mesurer"
               target="_blank"
@@ -116,7 +131,7 @@ export default function RootLayout({ children }) {
                 <code className="code">S</code>
               </div>
               <div className="max-w-[60%] text-right text-balance text-muted">
-                Select mode (default)
+                Toggle Select mode
               </div>
             </div>
             <div className="flex items-start justify-between gap-8 border-b border-border px-2 py-2">
