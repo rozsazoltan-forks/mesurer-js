@@ -30,7 +30,7 @@ export function App() {
               v{version}
             </a>
             <a
-              href="https://www.npmjs.com/package/mesurer"
+              href="https://github.com/ibelick/mesurer"
               target="_blank"
               rel="noreferrer"
               aria-label="NPM package"
