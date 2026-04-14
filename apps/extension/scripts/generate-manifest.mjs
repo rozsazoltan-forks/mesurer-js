@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { cp, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -10,6 +10,8 @@ const workspaceRoot = path.resolve(extensionRoot, "..", "..");
 const baseManifestPath = path.join(extensionRoot, "manifest.base.json");
 const packagePath = path.join(workspaceRoot, "packages", "mesurer", "package.json");
 const outputPath = path.join(extensionRoot, "dist", "manifest.json");
+const iconsSourceDir = path.join(extensionRoot, "icons");
+const iconsOutputDir = path.join(extensionRoot, "dist", "icons");
 
 const [baseManifestRaw, packageRaw] = await Promise.all([
   readFile(baseManifestPath, "utf8"),
@@ -28,3 +30,4 @@ const manifest = {
 
 await mkdir(path.dirname(outputPath), { recursive: true });
 await writeFile(outputPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+await cp(iconsSourceDir, iconsOutputDir, { recursive: true });
