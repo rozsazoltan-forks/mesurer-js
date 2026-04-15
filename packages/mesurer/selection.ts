@@ -8,10 +8,28 @@ import { rectsOverlap } from "./geometry"
 import { pickMultiTargets, pickPointTarget, pickSingleTarget } from "./targets"
 import type { Point, Rect } from "./types"
 
+const getOverlayHost = (overlayNode: HTMLDivElement | null) => {
+  if (!overlayNode) return null
+  const rootNode = overlayNode.getRootNode()
+  return rootNode instanceof ShadowRoot ? rootNode.host : null
+}
+
+const isOverlayElement = (
+  element: HTMLElement,
+  overlayNode: HTMLDivElement | null,
+  overlayHost: Element | null
+) => {
+  if (overlayNode && overlayNode.contains(element)) return true
+  if (overlayHost && element === overlayHost) return true
+  return false
+}
+
 export const getTargetElement = (
   point: Point,
   overlayNode: HTMLDivElement | null
 ) => {
+  const overlayHost = getOverlayHost(overlayNode)
+
   if (overlayNode) {
     const previous = overlayNode.style.pointerEvents
     overlayNode.style.pointerEvents = "none"
@@ -20,7 +38,7 @@ export const getTargetElement = (
 
     for (const element of elements) {
       if (!(element instanceof HTMLElement)) continue
-      if (overlayNode.contains(element)) continue
+      if (isOverlayElement(element, overlayNode, overlayHost)) continue
       if (element === document.body || element === document.documentElement)
         continue
       const rect = element.getBoundingClientRect()
@@ -33,6 +51,7 @@ export const getTargetElement = (
   const elements = document.elementsFromPoint(point.x, point.y)
   for (const element of elements) {
     if (!(element instanceof HTMLElement)) continue
+    if (isOverlayElement(element, overlayNode, overlayHost)) continue
     if (element === document.body || element === document.documentElement)
       continue
     const rect = element.getBoundingClientRect()
@@ -46,11 +65,12 @@ export const getShiftClickTarget = (
   point: Point,
   overlayNode: HTMLDivElement | null
 ) => {
+  const overlayHost = getOverlayHost(overlayNode)
   const elements = document.elementsFromPoint(point.x, point.y)
   for (let i = elements.length - 1; i >= 0; i -= 1) {
     const element = elements[i]
     if (!(element instanceof HTMLElement)) continue
-    if (overlayNode && overlayNode.contains(element)) continue
+    if (isOverlayElement(element, overlayNode, overlayHost)) continue
     if (element === document.body || element === document.documentElement)
       continue
     const rect = element.getBoundingClientRect()
@@ -93,6 +113,7 @@ export const getSelectionEntries = (
   rect: Rect,
   overlayNode: HTMLDivElement | null
 ) => {
+  const overlayHost = getOverlayHost(overlayNode)
   const frame = getFrameToken()
   const key = `${Math.round(rect.left)}:${Math.round(rect.top)}:${Math.round(
     rect.width
@@ -112,7 +133,7 @@ export const getSelectionEntries = (
   const entries = elements
     .map((element) => ({ element, rect: getRectFromDomCached(element) }))
     .filter(({ element, rect: elementRect }) => {
-      if (overlayNode && overlayNode.contains(element)) return false
+      if (isOverlayElement(element, overlayNode, overlayHost)) return false
       if (element === document.body || element === document.documentElement)
         return false
       if (

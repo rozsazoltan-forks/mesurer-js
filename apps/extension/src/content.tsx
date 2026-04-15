@@ -33,6 +33,10 @@ const getOrCreateContainer = () => {
   if (!host) {
     host = document.createElement("div");
     host.id = HOST_ID;
+    host.style.position = "fixed";
+    host.style.inset = "0";
+    host.style.zIndex = "2147483647";
+    host.style.isolation = "isolate";
     document.body.appendChild(host);
   }
 

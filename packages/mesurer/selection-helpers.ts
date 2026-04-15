@@ -1,6 +1,12 @@
 import { getRectFromDom } from "./dom"
 import type { InspectMeasurement, Point } from "./types"
 
+const getOverlayHost = (overlayNode: HTMLDivElement | null) => {
+  if (!overlayNode) return null
+  const rootNode = overlayNode.getRootNode()
+  return rootNode instanceof ShadowRoot ? rootNode.host : null
+}
+
 export const getPrimarySelectedMeasurement = (
   selectedMeasurements: InspectMeasurement[],
   selectedMeasurement: InspectMeasurement | null
@@ -14,6 +20,7 @@ export const getSelectedMeasurementHit = (params: {
   selectedMeasurements: InspectMeasurement[]
   overlayNode: HTMLDivElement | null
 }) => {
+  const overlayHost = getOverlayHost(params.overlayNode)
   const candidates = params.selectedMeasurements
     .map((measurement) => {
       const element = measurement.elementRef
@@ -35,6 +42,7 @@ export const getSelectedMeasurementHit = (params: {
   for (const element of stack) {
     if (!(element instanceof HTMLElement)) continue
     if (params.overlayNode && params.overlayNode.contains(element)) continue
+    if (overlayHost && element === overlayHost) continue
     for (const candidate of candidates) {
       if (
         candidate.element === element ||
