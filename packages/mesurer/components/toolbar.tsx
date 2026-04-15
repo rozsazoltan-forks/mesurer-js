@@ -362,7 +362,7 @@ function ToolbarComponent(
   return (
     <div
       ref={ref}
-      className="msr:pointer-events-auto msr:absolute msr:z-[90] msr:flex msr:items-center msr:gap-1 msr:rounded-[12px] msr:bg-[#fff] msr:p-1 msr:outline msr:outline-transparent msr:shadow-[0px_0px_.5px_rgba(0,0,0,.18),0px_3px_8px_rgba(0,0,0,.1),0px_1px_3px_rgba(0,0,0,.1)]"
+      className="mesurer-toolbar-surface msr:pointer-events-auto msr:absolute msr:z-[90] msr:flex msr:items-center msr:gap-1 msr:rounded-[12px] msr:bg-[#fff] msr:p-1 msr:outline msr:outline-transparent"
       style={{ left: position.x, top: position.y }}
       onPointerDown={(event) => {
         onInteract();
@@ -449,7 +449,7 @@ function ToolbarComponent(
         {guideMenuOpen ? (
           <div
             className={cn(
-              "msr:absolute msr:z-[70] msr:w-44 msr:rounded-lg msr:border msr:border-ink-200 msr:bg-white msr:p-1 msr:shadow-[0px_10px_30px_rgba(0,0,0,0.08)] msr:outline-none msr:focus:outline-none",
+              "mesurer-menu-surface msr:absolute msr:z-[70] msr:w-44 msr:rounded-lg msr:border msr:border-ink-200 msr:bg-white msr:p-1 msr:outline-none msr:focus:outline-none",
               "msr:flex msr:flex-col msr:gap-px",
               menuSide === "bottom"
                 ? "msr:top-full msr:mt-2"
