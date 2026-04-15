@@ -3,10 +3,14 @@ import InstallCommand from "./components/install-command";
 import CodeBlock from "./components/code-block";
 import { getPackageVersion } from "./utils/get-package-version";
 import Changelog from "./components/changelog";
+import Privacy from "./components/privacy";
 
 const version = getPackageVersion();
 const isChangelogPage =
   typeof window !== "undefined" && window.location.pathname === "/changelog";
+const isPrivacyPage =
+  typeof window !== "undefined" && window.location.pathname === "/privacy";
+const isDocsPage = isChangelogPage || isPrivacyPage;
 
 function Header({
   showDescription,
@@ -249,20 +253,42 @@ function ChangelogContent() {
   );
 }
 
+function PrivacyContent() {
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-2">
+        <p className="font-[450] text-strong">Privacy Policy</p>
+        <p className="text-muted">Data handling and extension permissions.</p>
+      </div>
+      <Privacy />
+    </div>
+  );
+}
+
 export function App() {
   return (
     <main className="min-h-screen px-5 py-20">
       <Measurer />
       <div className="mx-auto flex max-w-2xl flex-col gap-14">
         <Header
-          showDescription={!isChangelogPage}
-          linkToHome={isChangelogPage}
+          showDescription={!isDocsPage}
+          linkToHome={isDocsPage}
         />
-        {isChangelogPage ? <ChangelogContent /> : <HomeContent />}
-        {!isChangelogPage && (
+        {isChangelogPage ? (
+          <ChangelogContent />
+        ) : isPrivacyPage ? (
+          <PrivacyContent />
+        ) : (
+          <HomeContent />
+        )}
+        {!isDocsPage && (
           <div className="pt-6 text-muted">
             <a href="/changelog" className="transition-colors hover:text-strong">
               Changelog
+            </a>
+            <span className="px-2">·</span>
+            <a href="/privacy" className="transition-colors hover:text-strong">
+              Privacy
             </a>
           </div>
         )}
